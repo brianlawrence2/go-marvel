@@ -32,7 +32,7 @@ func Url(pubKey string, privKey string, ts string, endpoint string) string {
   return marvelAPIURL + endpoint + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + Hash(pubKey, privKey, ts)
 }
 
-func (cr Request) Get() (*http.Response, error) {
+func (cr *Request) Get() (*http.Response, error) {
   t    := time.Now().Format("20060102150405")
 
   url := Url(cr.PublicKey, cr.PrivateKey, t, cr.Endpoint)
