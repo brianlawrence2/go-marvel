@@ -2,12 +2,9 @@ package marvel
 
 import (
     "crypto/md5"
-    //"fmt"
     "time"
     "encoding/hex"
-    //"encoding/json"
     "net/http"
-    //"net/url"
 )
 
 const (
@@ -29,7 +26,6 @@ func Url(pubKey string, privKey string, ts string, endpoint string) string {
 
 func GetCharacters(publicKey, privateKey, endpoint string) (*http.Response, error) {
   t    := time.Now().Format("20060102150405")
-  //hash := Hash(publicKey, privateKey, t)
 
   url := Url(publicKey, privateKey, t, endpoint)
 
