@@ -1,43 +1,43 @@
 package marvel
 
 import (
-    "crypto/md5"
-    "time"
-    "encoding/hex"
-    "net/http"
+	"crypto/md5"
+	"encoding/hex"
+	"net/http"
+	"time"
 )
 
 const (
-  marvelAPIURL = "http://gateway.marvel.com/v1/public/"
-  userAgent    = "go-marvel" + version
-  version      = "0.1.0"
+	marvelAPIURL = "http://gateway.marvel.com/v1/public/"
+	userAgent    = "go-marvel" + version
+	version      = "0.1.0"
 )
 
 type Request struct {
-  PublicKey string
-  PrivateKey string
-  Endpoint string
-  Id string
-  Item string
+	PublicKey  string
+	PrivateKey string
+	Endpoint   string
+	Id         string
+	Item       string
 }
 
 func Hash(pubKey string, privKey string, ts string) string {
-  hash := md5.New()
-  st   := ts + privKey + pubKey
-  hash.Write([]byte(st))
-  return hex.EncodeToString(hash.Sum(nil))
+	hash := md5.New()
+	st := ts + privKey + pubKey
+	hash.Write([]byte(st))
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 func Url(pubKey string, privKey string, ts string, endpoint string) string {
-  return marvelAPIURL + endpoint + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + Hash(pubKey, privKey, ts)
+	return marvelAPIURL + endpoint + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + Hash(pubKey, privKey, ts)
 }
 
 func (cr *Request) Get() (*http.Response, error) {
-  t    := time.Now().Format("20060102150405")
+	t := time.Now().Format("20060102150405")
 
-  url := Url(cr.PublicKey, cr.PrivateKey, t, cr.Endpoint)
+	url := Url(cr.PublicKey, cr.PrivateKey, t, cr.Endpoint)
 
-  response, err := http.Get(url)
+	response, err := http.Get(url)
 
-  return response, err
+	return response, err
 }
